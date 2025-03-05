@@ -72,7 +72,7 @@ const langObject = {
   },
   fr: {
     home: 'Page d\'accueil',
-    about: 'À-propos',
+    about: 'A propos',
     gallery: 'Galerie',
     contact: 'Nous contacter',
 
