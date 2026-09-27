@@ -29,3 +29,14 @@
 - תרגומי השפות מופעלים ב-JavaScript; ללא JavaScript התוכן הצרפתי וכתובת הדוא״ל זמינים. שיפור SEO מלא לכל שפה יכול לכלול בהמשך כתובות ודפי HTML ייעודיים.
 - טופס הפנייה דורש תוכנת דוא״ל מוגדרת. לשליחה ישירה מהאתר נדרש שירות פניות או צד שרת.
 - לא פורסמה גרסה מקוונת: רכיב הפרסום המקומי של Sites הפסיק להיות זמין במהלך העבודה. קובצי האתר נשמרו במלואם.
+
+## טקסטורת היין
+נוצרה באמצעות כלי יצירת התמונות המובנה. הקובץ: dist/assets/wine-stains.png.
+הנחיית היצירה: Transparent decorative wine-stain overlay for an elegant boutique winery website. Wide landscape composition, a single delicate incomplete red-wine glass-base ring cropped by the lower left edge, and three small irregular wine droplets near the upper right edge. Natural dried wine pigment, faint muted burgundy, organic capillary edges, translucent texture. Central 70% completely transparent and empty for an existing logo. No paper, text, logo, glass, objects or shadows. Minimal marks confined to peripheral corners. Standalone texture, not a website mockup.
+
+
+עדכון טקסטורה: dist/assets/wine-stains-v2.png, נוצרה בכלי התמונות המובנה. הנחיה: Transparent landscape winery overlay, one complete natural dried red wine glass-base ring in the lower left, three irregular elongated wine droplets in upper right, all within canvas margins, clear central 65%, muted garnet pigment, no text, objects or background. מוצגת במצב contain ללא חיתוך.
+
+
+הגרסה הפעילה משתמשת שוב ב-wine-stains.png המקורי: הכתמים מוצגים מיד ובאופן קבוע, ללא אנימציה וללא וידאו. הטבעת והטיפות מעוגנות בנפרד לשולי מסך הפתיחה כדי למנוע חיתוך עליון.
+
