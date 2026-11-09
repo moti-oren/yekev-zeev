@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <script>
+    /* Pick the language before first paint so RTL/LTR never flips visibly. */
+    (function () {
+      var ok = ['en', 'he', 'fr'], lang;
+      try { lang = new URLSearchParams(location.search).get('lang'); } catch (e) {}
+      if (ok.indexOf(lang) < 0) { try { lang = localStorage.getItem('lang'); } catch (e) {} }
+      if (ok.indexOf(lang) < 0) {
+        var prefs = navigator.languages || [navigator.language || ''];
+        for (var i = 0; i < prefs.length && ok.indexOf(lang) < 0; i++) {
+          var p = String(prefs[i]).slice(0, 2).toLowerCase();
+          lang = p === 'iw' ? 'he' : p;
+        }
+      }
+      if (ok.indexOf(lang) < 0) lang = 'fr';
+      var d = document.documentElement;
+      d.lang = lang; d.dir = lang === 'he' ? 'rtl' : 'ltr';
+      d.className += ' js' + (lang !== 'en' ? ' i18n-wait' : '');
+      window.__LANG = lang;
+    })();
+  </script>
+
+  <title>Yekev Zeev — Domaine du loup · Boutique winery in the Judean Hills</title>
+  <meta name="description" content="Boutique winery founded in 2011 in Kiryat Yearim, in the Judean Hills around Jerusalem. Wines aged in French oak, and tastings with the winemaker, Zeev.">
+  <meta name="theme-color" content="#f2ede2">
+  <meta name="color-scheme" content="light">
+  <link rel="canonical" href="https://yekev-zeev.com/v3/">
+  <link rel="alternate" hreflang="en" href="https://yekev-zeev.com/v3/?lang=en">
+  <link rel="alternate" hreflang="he" href="https://yekev-zeev.com/v3/?lang=he">
+  <link rel="alternate" hreflang="fr" href="https://yekev-zeev.com/v3/?lang=fr">
+  <link rel="alternate" hreflang="x-default" href="https://yekev-zeev.com/v3/">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Yekev Zeev — Domaine du loup">
+  <meta property="og:title" content="Yekev Zeev — Domaine du loup">
+  <meta property="og:description" content="Boutique winery founded in 2011 in Kiryat Yearim, in the Judean Hills around Jerusalem. Wines aged in French oak, and tastings with the winemaker, Zeev.">
+  <meta property="og:url" content="https://yekev-zeev.com/v3/">
+  <meta property="og:image" content="https://yekev-zeev.com/v3/assets/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Two bottles of Domaine du loup and a glass of red wine before the hills around Jerusalem at dusk.">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="he_IL">
+  <meta property="og:locale:alternate" content="fr_FR">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Winery",
+    "name": "Yekev Zeev",
+    "alternateName": ["יקב זאב", "Domaine du loup"],
+    "url": "https://yekev-zeev.com/",
+    "image": "https://yekev-zeev.com/v3/assets/og-image.jpg",
+    "description": "Boutique winery founded in 2011 in Kiryat Yearim, in the Judean Hills around Jerusalem. Wines aged in French oak, and tastings with the winemaker, Zeev.",
+    "foundingDate": "2011",
+    "founder": { "@type": "Person", "name": "Zeev Zyzek", "jobTitle": "Winemaker and oenologist" },
+    "email": "mailto:yekevzeev@gmail.com",
+    "hasMap": "https://goo.gl/maps/TMsGVomxbrcGxnPZ9",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Kiryat Yearim",
+      "addressRegion": "Judean Hills",
+      "addressCountry": "IL"
+    },
+    "knowsLanguage": ["he", "fr", "en"]
+  }
+  </script>
+
+  <link rel="preload" href="assets/fonts/Bellefair-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" as="image" type="image/avif"
+        imagesrcset="assets/img/har-adar-5-480.avif 480w, assets/img/har-adar-5-800.avif 800w, assets/img/har-adar-5-1200.avif 1200w, assets/img/har-adar-5-1800.avif 1800w"
+        imagesizes="(min-width: 960px) 50vw, 100vw" fetchpriority="high">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <a class="skip-link" href="#main" data-i18n="ui-skip">Skip to content</a>
+
+  <!-- ============ Header ============ -->
+  <header class="site-header" data-header>
+    <div class="wrap header-inner">
+      <a class="brand" href="#top" data-i18n-attr="aria-label:home" aria-label="Home">
+        <span class="brand-latin" lang="fr">Domaine du loup</span>
+        <span class="brand-hebrew" lang="he">יקב זאב</span>
+      </a>
+
+      <nav class="nav" id="menu" data-menu>
+        <ul class="nav-list">
+          <li><a href="#about" data-i18n="about">About</a></li>
+          <li><a href="#wines" data-i18n="nav-wines">The wines</a></li>
+          <li><a href="#tasting" data-i18n="nav-tasting">Tastings</a></li>
+          <li><a href="#gallery" data-i18n="gallery">Gallery</a></li>
+          <li><a href="#contact" data-i18n="contact">Contact us</a></li>
+        </ul>
+        <a class="btn btn-ink nav-cta" href="#contact" data-topic="tasting" data-i18n="ui-cta-tasting">Book a tasting</a>
+      </nav>
+
+      <div class="lang" role="group" data-i18n-attr="aria-label:ui-lang" aria-label="Language">
+        <button type="button" data-lang="en" lang="en" aria-label="English" title="English">EN</button>
+        <button type="button" data-lang="he" lang="he" aria-label="עברית" title="עברית">עב</button>
+        <button type="button" data-lang="fr" lang="fr" aria-label="Français" title="Français">FR</button>
+      </div>
+
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="menu" data-menu-toggle>
+        <span class="sr-only" data-i18n="ui-menu-open">Open menu</span>
+        <span class="menu-icon" aria-hidden="true"><span></span><span></span></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ============ Hero ============ -->
+    <section class="hero" id="top">
+      <svg class="wash wash-hero" aria-hidden="true" focusable="false" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <filter id="watercolor" x="-20%" y="-20%" width="140%" height="140%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="3" seed="7" result="n"/>
+            <feDisplacementMap in="SourceGraphic" in2="n" scale="70" xChannelSelector="R" yChannelSelector="G" result="d"/>
+            <feGaussianBlur in="d" stdDeviation="5"/>
+          </filter>
+        </defs>
+        <g filter="url(#watercolor)">
+          <ellipse cx="260" cy="230" rx="480" ry="90" fill="#8ea7a3" opacity=".17"/>
+          <ellipse cx="940" cy="560" rx="400" ry="80" fill="#e3d3a0" opacity=".38"/>
+          <ellipse cx="480" cy="700" rx="420" ry="55" fill="#8ea7a3" opacity=".10"/>
+        </g>
+      </svg>
+
+      <div class="wrap hero-grid">
+        <div class="hero-text">
+          <p class="eyebrow reveal" data-i18n="hero-place">Kiryat Yearim · Judean Hills · 2011</p>
+          <h1 class="hero-title reveal">
+            <span class="hero-latin" lang="fr">Domaine du loup</span>
+            <span class="hero-hebrew" lang="he">יקב זאב</span>
+          </h1>
+          <p class="hero-lead reveal" data-i18n="about-content-title">Welcome to “Yekev Zeev” — or “Domaine du loup”.</p>
+          <div class="hero-actions reveal">
+            <a class="btn btn-ink" href="#contact" data-topic="tasting" data-i18n="ui-cta-tasting">Book a tasting</a>
+            <a class="link-quiet" href="#story"><span data-i18n="who-we-are">Who we are</span> <span class="arrow" aria-hidden="true">→</span></a>
+          </div>
+        </div>
+
+        <figure class="hero-media frame reveal">
+          <picture>
+            <source type="image/avif" srcset="assets/img/har-adar-5-480.avif 480w, assets/img/har-adar-5-800.avif 800w, assets/img/har-adar-5-1200.avif 1200w, assets/img/har-adar-5-1800.avif 1800w" sizes="(min-width: 960px) 50vw, 100vw">
+            <source type="image/webp" srcset="assets/img/har-adar-5-480.webp 480w, assets/img/har-adar-5-800.webp 800w, assets/img/har-adar-5-1200.webp 1200w, assets/img/har-adar-5-1800.webp 1800w" sizes="(min-width: 960px) 50vw, 100vw">
+            <img src="assets/img/har-adar-5-1200.jpg" srcset="assets/img/har-adar-5-800.jpg 800w, assets/img/har-adar-5-1200.jpg 1200w" sizes="(min-width: 960px) 50vw, 100vw"
+                 width="1200" height="800" fetchpriority="high" decoding="async" data-parallax
+                 data-i18n-attr="alt:alt-har-adar-5" alt="Two bottles of Domaine du loup and a glass of red wine before the hills around Jerusalem at dusk.">
+          </picture>
+        </figure>
+      </div>
+
+      <a class="scroll-cue" href="#about">
+        <span data-i18n="see-more">See more</span>
+        <svg aria-hidden="true" viewBox="0 0 12 40" width="12" height="40"><path d="M6 0v38M1 33l5 6 5-6" fill="none" stroke="currentColor" stroke-width="1"/></svg>
+      </a>
+    </section>
+
+    <!-- ============ I · The land ============ -->
+    <section class="chapter chapter-land" id="about" aria-labelledby="ch1">
+      <div class="wrap chapter-grid">
+        <header class="ch-head reveal">
+          <span class="ch-num" aria-hidden="true">I</span>
+          <p class="eyebrow" data-i18n="about-subtitle">Who we are</p>
+          <h2 id="ch1" data-i18n="ch-1">The land</h2>
+        </header>
+
+        <div class="ch-text reveal">
+          <p class="lede" data-i18n="about-content-row-1">Our vineyard was inaugurated in 2011 in Kiryat Yearim, in the hills of Judea surrounding the city of Jerusalem — where, according to history, the Holy Ark of the Temple and of the Jewish people was once hidden.</p>
+          <p class="year" aria-hidden="true">2011</p>
+        </div>
+
+        <figure class="ch-media frame frame-tall reveal">
+          <picture>
+            <source type="image/avif" srcset="assets/img/vine-480.avif 480w, assets/img/vine-800.avif 800w, assets/img/vine-1200.avif 1200w" sizes="(min-width: 960px) 34vw, 80vw">
+            <source type="image/webp" srcset="assets/img/vine-480.webp 480w, assets/img/vine-800.webp 800w, assets/img/vine-1200.webp 1200w" sizes="(min-width: 960px) 34vw, 80vw">
+            <img src="assets/img/vine-800.jpg" width="800" height="1200" loading="lazy" decoding="async" data-parallax
+                 data-i18n-attr="alt:alt-vine" alt="A grape vine heavy with dark bunches, its old trunk in the foreground.">
+          </picture>
+        </figure>
+      </div>
+
+      <figure class="sketch reveal">
+        <picture>
+          <source type="image/avif" srcset="assets/img/sketch-746.avif">
+          <source type="image/webp" srcset="assets/img/sketch-746.webp">
+          <img src="assets/img/sketch-746.jpg" width="746" height="430" loading="lazy" decoding="async"
+               data-i18n-attr="alt:alt-sketch" alt="Pencil drawing from the label: rows of vines in the hills and a wolf watching.">
+        </picture>
+        <figcaption data-i18n="sketch-caption">Zeev — Hebrew for “wolf”</figcaption>
+      </figure>
+    </section>
+
+    <!-- ============ II · The winemaker ============ -->
+    <section class="chapter chapter-man" id="story" aria-labelledby="ch2">
+      <div class="wrap man-grid">
+        <figure class="man-media frame reveal">
+          <picture>
+            <source type="image/avif" srcset="assets/img/har-adar-4-480.avif 480w, assets/img/har-adar-4-800.avif 800w, assets/img/har-adar-4-1200.avif 1200w, assets/img/har-adar-4-1800.avif 1800w" sizes="(min-width: 960px) 50vw, 100vw">
+            <source type="image/webp" srcset="assets/img/har-adar-4-480.webp 480w, assets/img/har-adar-4-800.webp 800w, assets/img/har-adar-4-1200.webp 1200w, assets/img/har-adar-4-1800.webp 1800w" sizes="(min-width: 960px) 50vw, 100vw">
+            <img src="assets/img/har-adar-4-1200.jpg" width="1200" height="800" loading="lazy" decoding="async" data-parallax
+                 data-i18n-attr="alt:alt-har-adar-4" alt="Zeev smells a glass of red wine among olive branches.">
+          </picture>
+        </figure>
+
+        <div class="man-text">
+          <header class="ch-head reveal">
+            <span class="ch-num" aria-hidden="true">II</span>
+            <h2 id="ch2" data-i18n="ch-2">The winemaker</h2>
+          </header>
+          <p class="story reveal" data-i18n="about-content-row-2">It was a young winemaker and oenologist by the name of Zeev Zyzek who — out of love for the precious, incredible and delicious creations of God, Hashem, and out of his infinite admiration for the in-depth study of the Torah and the Talmud — immersed himself in the sublime wisdom of wine, until, with a great deal of life, joy and love, he made his first wines.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ III · The wines ============ -->
+    <section class="chapter chapter-wines" id="wines" aria-labelledby="ch3">
+      <div class="wrap">
+        <header class="ch-head ch-head-center reveal">
+          <span class="ch-num" aria-hidden="true">III</span>
+          <h2 id="ch3" data-i18n="ch-3">The wines</h2>
+        </header>
+
+        <div class="wines-grid">
+          <figure class="label reveal">
+            <picture>
+              <source type="image/avif" srcset="assets/img/label-373.avif 373w, assets/img/label-746.avif 746w" sizes="(min-width: 960px) 340px, 62vw">
+              <source type="image/webp" srcset="assets/img/label-373.webp 373w, assets/img/label-746.webp 746w" sizes="(min-width: 960px) 340px, 62vw">
+              <img src="assets/img/label-746.jpg" width="746" height="1455" loading="lazy" decoding="async"
+                   data-i18n-attr="alt:alt-label" alt="The Domaine du loup label: a pencil drawing of rows of vines and a wolf, with watercolour washes. Petite Sirah 2019, sweet Port.">
+            </picture>
+            <figcaption data-i18n="label-caption">The label — Petite Sirah 2019, Port</figcaption>
+          </figure>
+
+          <div class="wines-text">
+            <p class="reveal" data-i18n="about-content-row-3">Thanks to the harmonious atmosphere of this small village of Kiryat Yearim, and to the unique quality of the grapes chosen meticulously in the vineyards of the region and of Ramat HaGolan, our wine — with its specificity as a “boutique wine” — lets us discover exquisite and very fruity aromas. Depending on our grape varieties, such as Cabernet Sauvignon, Merlot, Petite Sirah, Carignan or others, they let us experience an aspect of life and light: grapefruit, forest fruits, cherries, plums and more — or even chocolate and citrus fruits in our delicious Ports.</p>
+
+            <dl class="notes reveal">
+              <div class="note">
+                <dt data-i18n="wines-grapes">Grape varieties</dt>
+                <dd lang="fr">Cabernet&nbsp;Sauvignon · Merlot · Petite&nbsp;Sirah · Carignan</dd>
+              </div>
+              <div class="note">
+                <dt data-i18n="wines-aromas">Aromas</dt>
+                <dd data-i18n="wines-aromas-list">Grapefruit · Forest fruits · Cherries · Plums</dd>
+              </div>
+              <div class="note">
+                <dt data-i18n="wines-ports">In our Ports</dt>
+                <dd data-i18n="wines-ports-list">Chocolate · Citrus fruits</dd>
+              </div>
+              <div class="note">
+                <dt data-i18n="wines-sources">Grapes from</dt>
+                <dd data-i18n="wines-sources-list">Kiryat Yearim · Ramat HaGolan</dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+
+        <div class="oak-grid">
+          <figure class="oak-media frame frame-tall reveal">
+            <picture>
+              <source type="image/avif" srcset="assets/img/barrels-480.avif 480w, assets/img/barrels-800.avif 800w, assets/img/barrels-1200.avif 1200w" sizes="(min-width: 960px) 30vw, 70vw">
+              <source type="image/webp" srcset="assets/img/barrels-480.webp 480w, assets/img/barrels-800.webp 800w, assets/img/barrels-1200.webp 1200w" sizes="(min-width: 960px) 30vw, 70vw">
+              <img src="assets/img/barrels-800.jpg" width="800" height="1200" loading="lazy" decoding="async" data-parallax
+                   data-i18n-attr="alt:alt-barrels" alt="Oak barrels stacked in a cellar.">
+            </picture>
+          </figure>
+          <div class="oak-text reveal">
+            <p class="oak-kicker"><span data-i18n="wines-oak">French oak</span> <span class="oak-note" data-i18n="wines-oak-note">At least a year, if not several</span></p>
+            <p class="oak-body" data-i18n="about-content-row-4">Our French oak barriques complete the delicious traditional taste of good wine, while allowing it to take on age and personality as it rests in them for at least a year, if not several years.</p>
+          </div>
+          <figure class="bottles-media frame reveal">
+            <picture>
+              <source type="image/avif" srcset="assets/img/har-adar-8-480.avif 480w, assets/img/har-adar-8-800.avif 800w, assets/img/har-adar-8-1200.avif 1200w, assets/img/har-adar-8-1800.avif 1800w" sizes="(min-width: 960px) 46vw, 100vw">
+              <source type="image/webp" srcset="assets/img/har-adar-8-480.webp 480w, assets/img/har-adar-8-800.webp 800w, assets/img/har-adar-8-1200.webp 1200w, assets/img/har-adar-8-1800.webp 1800w" sizes="(min-width: 960px) 46vw, 100vw">
+              <img src="assets/img/har-adar-8-1200.jpg" width="1200" height="800" loading="lazy" decoding="async" data-parallax
+                   data-i18n-attr="alt:alt-har-adar-8" alt="Four bottles of Domaine du loup with glasses and snacks on an outdoor table.">
+            </picture>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ IV · Around the table ============ -->
+    <section class="chapter chapter-table" id="tasting" aria-labelledby="ch4">
+      <figure class="wide-media frame reveal">
+        <picture>
+          <source type="image/avif" srcset="assets/img/har-adar-1-480.avif 480w, assets/img/har-adar-1-800.avif 800w, assets/img/har-adar-1-1200.avif 1200w, assets/img/har-adar-1-1800.avif 1800w" sizes="100vw">
+          <source type="image/webp" srcset="assets/img/har-adar-1-480.webp 480w, assets/img/har-adar-1-800.webp 800w, assets/img/har-adar-1-1200.webp 1200w, assets/img/har-adar-1-1800.webp 1800w" sizes="100vw">
+          <img src="assets/img/har-adar-1-1200.jpg" width="1200" height="800" loading="lazy" decoding="async" data-parallax
+               data-i18n-attr="alt:alt-har-adar-1" alt="Zeev pours red wine for guests at an outdoor tasting under the trees.">
+        </picture>
+      </figure>
+
+      <div class="wrap table-grid">
+        <header class="ch-head reveal">
+          <span class="ch-num" aria-hidden="true">IV</span>
+          <h2 id="ch4" data-i18n="ch-4">Around the table</h2>
+        </header>
+
+        <div class="table-text">
+          <p class="reveal" data-i18n="about-content-row-5">Our winemaker also offers wine tastings, where together we can discover the finesse and the infinite secrets that wine hides and abounds in — if only we know how to make them our own. It is enough to spend one or two hours together around a table with French cheeses, good meats or many other dishes, to be illuminated by the nobility, life, joy and divine richness hiding behind this mysterious creature that is wine. This tasting will dazzle beginners as well as any veteran in the field, with its simple, pleasant yet poignant presentation.</p>
+
+          <ul class="facts reveal">
+            <li data-i18n="tasting-duration">One or two hours</li>
+            <li data-i18n="tasting-table">French cheeses · good meats · many other dishes</li>
+            <li data-i18n="tasting-for">For beginners and veterans alike</li>
+          </ul>
+
+          <a class="btn btn-wine reveal" href="#contact" data-topic="tasting" data-i18n="ui-cta-tasting">Book a tasting</a>
+        </div>
+
+        <aside class="letter reveal">
+          <p data-i18n="about-content-row-6">Delighted to meet you — see you very soon!</p>
+          <p class="letter-toast" data-i18n="about-content-row-7">Le’haim!</p>
+          <p class="letter-sign" data-i18n="about-content-row-8">Zeev.</p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ============ Gallery ============ -->
+    <section class="gallery-section" id="gallery" aria-labelledby="gallery-title">
+      <div class="wrap">
+        <header class="ch-head reveal">
+          <p class="eyebrow" data-i18n="gallery-subtitle">Gallery</p>
+          <h2 id="gallery-title" data-i18n="gallery-title">Tasting and more</h2>
+          <p class="gallery-hint" data-i18n="gallery-hint">Swipe to browse</p>
+        </header>
+      </div>
+
+      <ul class="gallery" data-gallery>
+        <li><button type="button" class="g-item" data-img="har-adar-7" data-max="1800" data-alt="alt-har-adar-7"><picture><source type="image/avif" srcset="assets/img/har-adar-7-480.avif 480w, assets/img/har-adar-7-800.avif 800w, assets/img/har-adar-7-1200.avif 1200w" sizes="(min-width: 960px) 60vw, 82vw"><source type="image/webp" srcset="assets/img/har-adar-7-480.webp 480w, assets/img/har-adar-7-800.webp 800w, assets/img/har-adar-7-1200.webp 1200w" sizes="(min-width: 960px) 60vw, 82vw"><img src="assets/img/har-adar-7-800.jpg" width="1200" height="800" loading="lazy" decoding="async" data-i18n-attr="alt:alt-har-adar-7" alt="Zeev smiles behind a table set with bottles of his wine and glasses."></picture></button></li>
+        <li><button type="button" class="g-item" data-img="har-adar-2" data-max="1800" data-alt="alt-har-adar-2"><picture><source type="image/avif" srcset="assets/img/har-adar-2-480.avif 480w, assets/img/har-adar-2-800.avif 800w" sizes="(min-width: 960px) 30vw, 82vw"><source type="image/webp" srcset="assets/img/har-adar-2-480.webp 480w, assets/img/har-adar-2-800.webp 800w" sizes="(min-width: 960px) 30vw, 82vw"><img src="assets/img/har-adar-2-800.jpg" width="1200" height="800" loading="lazy" decoding="async" data-i18n-attr="alt:alt-har-adar-2" alt="Zeev raises a glass of red wine and talks with guests at an outdoor tasting."></picture></button></li>
+        <li><button type="button" class="g-item" data-img="har-adar-6" data-max="1800" data-alt="alt-har-adar-6"><picture><source type="image/avif" srcset="assets/img/har-adar-6-480.avif 480w, assets/img/har-adar-6-800.avif 800w" sizes="(min-width: 960px) 30vw, 82vw"><source type="image/webp" srcset="assets/img/har-adar-6-480.webp 480w, assets/img/har-adar-6-800.webp 800w" sizes="(min-width: 960px) 30vw, 82vw"><img src="assets/img/har-adar-6-800.jpg" width="1200" height="800" loading="lazy" decoding="async" data-i18n-attr="alt:alt-har-adar-6" alt="Bottles, glasses and small dishes laid out on a wooden table in golden evening light."></picture></button></li>
+        <li><button type="button" class="g-item" data-img="har-adar-3" data-max="1800" data-alt="alt-har-adar-3"><picture><source type="image/avif" srcset="assets/img/har-adar-3-480.avif 480w, assets/img/har-adar-3-800.avif 800w" sizes="(min-width: 960px) 30vw, 82vw"><source type="image/webp" srcset="assets/img/har-adar-3-480.webp 480w, assets/img/har-adar-3-800.webp 800w" sizes="(min-width: 960px) 30vw, 82vw"><img src="assets/img/har-adar-3-800.jpg" width="1200" height="800" loading="lazy" decoding="async" data-i18n-attr="alt:alt-har-adar-3" alt="Guests around a wooden picnic table listen to Zeev during a tasting."></picture></button></li>
+        <li><button type="button" class="g-item" data-img="har-adar-5" data-max="1800" data-alt="alt-har-adar-5"><picture><source type="image/avif" srcset="assets/img/har-adar-5-480.avif 480w, assets/img/har-adar-5-800.avif 800w" sizes="(min-width: 960px) 30vw, 82vw"><source type="image/webp" srcset="assets/img/har-adar-5-480.webp 480w, assets/img/har-adar-5-800.webp 800w" sizes="(min-width: 960px) 30vw, 82vw"><img src="assets/img/har-adar-5-800.jpg" width="1200" height="800" loading="lazy" decoding="async" data-i18n-attr="alt:alt-har-adar-5" alt="Two bottles of Domaine du loup and a glass of red wine before the hills around Jerusalem at dusk."></picture></button></li>
+        <li><button type="button" class="g-item" data-img="har-adar-9" data-max="1800" data-alt="alt-har-adar-9"><picture><source type="image/avif" srcset="assets/img/har-adar-9-480.avif 480w, assets/img/har-adar-9-800.avif 800w" sizes="(min-width: 960px) 30vw, 82vw"><source type="image/webp" srcset="assets/img/har-adar-9-480.webp 480w, assets/img/har-adar-9-800.webp 800w" sizes="(min-width: 960px) 30vw, 82vw"><img src="assets/img/har-adar-9-800.jpg" width="1200" height="800" loading="lazy" decoding="async" data-i18n-attr="alt:alt-har-adar-9" alt="Zeev speaks to a group of guests gathered around the tasting table."></picture></button></li>
+        <li><button type="button" class="g-item" data-img="har-adar-1" data-max="1800" data-alt="alt-har-adar-1"><picture><source type="image/avif" srcset="assets/img/har-adar-1-480.avif 480w, assets/img/har-adar-1-800.avif 800w, assets/img/har-adar-1-1200.avif 1200w" sizes="(min-width: 960px) 45vw, 82vw"><source type="image/webp" srcset="assets/img/har-adar-1-480.webp 480w, assets/img/har-adar-1-800.webp 800w, assets/img/har-adar-1-1200.webp 1200w" sizes="(min-width: 960px) 45vw, 82vw"><img src="assets/img/har-adar-1-800.jpg" width="1200" height="800" loading="lazy" decoding="async" data-i18n-attr="alt:alt-har-adar-1" alt="Zeev pours red wine for guests at an outdoor tasting under the trees."></picture></button></li>
+        <li><button type="button" class="g-item" data-img="har-adar-8" data-max="1800" data-alt="alt-har-adar-8"><picture><source type="image/avif" srcset="assets/img/har-adar-8-480.avif 480w, assets/img/har-adar-8-800.avif 800w, assets/img/har-adar-8-1200.avif 1200w" sizes="(min-width: 960px) 45vw, 82vw"><source type="image/webp" srcset="assets/img/har-adar-8-480.webp 480w, assets/img/har-adar-8-800.webp 800w, assets/img/har-adar-8-1200.webp 1200w" sizes="(min-width: 960px) 45vw, 82vw"><img src="assets/img/har-adar-8-800.jpg" width="1200" height="800" loading="lazy" decoding="async" data-i18n-attr="alt:alt-har-adar-8" alt="Four bottles of Domaine du loup with glasses and snacks on an outdoor table."></picture></button></li>
+        <li><button type="button" class="g-item" data-img="har-adar-4" data-max="1800" data-alt="alt-har-adar-4"><picture><source type="image/avif" srcset="assets/img/har-adar-4-480.avif 480w, assets/img/har-adar-4-800.avif 800w, assets/img/har-adar-4-1200.avif 1200w" sizes="(min-width: 960px) 45vw, 82vw"><source type="image/webp" srcset="assets/img/har-adar-4-480.webp 480w, assets/img/har-adar-4-800.webp 800w, assets/img/har-adar-4-1200.webp 1200w" sizes="(min-width: 960px) 45vw, 82vw"><img src="assets/img/har-adar-4-800.jpg" width="1200" height="800" loading="lazy" decoding="async" data-i18n-attr="alt:alt-har-adar-4" alt="Zeev smells a glass of red wine among olive branches."></picture></button></li>
+        <li><button type="button" class="g-item" data-img="france" data-max="1200" data-alt="alt-france"><picture><source type="image/avif" srcset="assets/img/france-480.avif 480w, assets/img/france-800.avif 800w, assets/img/france-1200.avif 1200w" sizes="(min-width: 960px) 45vw, 82vw"><source type="image/webp" srcset="assets/img/france-480.webp 480w, assets/img/france-800.webp 800w, assets/img/france-1200.webp 1200w" sizes="(min-width: 960px) 45vw, 82vw"><img src="assets/img/france-800.jpg" width="1200" height="900" loading="lazy" decoding="async" data-i18n-attr="alt:alt-france" alt="Guests raise their glasses around a long table at an indoor tasting evening."></picture></button></li>
+      </ul>
+      <p class="gallery-count wrap" aria-hidden="true"><span dir="ltr"><span data-gallery-pos>1</span> / <span data-gallery-total>10</span></span></p>
+    </section>
+
+    <!-- ============ Contact ============ -->
+    <section class="contact" id="contact" aria-labelledby="contact-title">
+      <div class="wrap contact-grid">
+        <header class="contact-head reveal">
+          <h2 id="contact-title" data-i18n="contact-title">Contact us</h2>
+          <p data-i18n="contact-subtitle">We would love to hear from you! Send us a message using the form below, or send us an email.</p>
+
+          <ul class="contact-direct">
+            <li>
+              <span class="cd-label" data-i18n="form-or">Or write directly to</span>
+              <a href="mailto:yekevzeev@gmail.com" dir="ltr">yekevzeev@gmail.com</a>
+            </li>
+            <li>
+              <span class="cd-label" data-i18n="our-location">Our location</span>
+              <a href="https://goo.gl/maps/TMsGVomxbrcGxnPZ9" target="_blank" rel="noopener"><span data-i18n="map-open">Open in Google Maps</span> <span class="arrow" aria-hidden="true">↗</span></a>
+            </li>
+          </ul>
+        </header>
+
+        <form class="form reveal" data-form novalidate>
+          <fieldset class="topics">
+            <legend data-i18n="form-topic">What is it about?</legend>
+            <label class="chip"><input type="radio" name="topic" value="tasting" checked><span data-i18n="form-topic-tasting">A tasting</span></label>
+            <label class="chip"><input type="radio" name="topic" value="wine"><span data-i18n="form-topic-wine">Our wines</span></label>
+            <label class="chip"><input type="radio" name="topic" value="other"><span data-i18n="form-topic-other">Something else</span></label>
+          </fieldset>
+
+          <div class="field">
+            <label for="first-name"><span data-i18n="contact-name">First name</span></label>
+            <input id="first-name" name="first-name" type="text" autocomplete="given-name" required aria-describedby="err-first-name">
+            <p class="err" id="err-first-name" data-i18n="form-err-name" hidden>Enter your first name.</p>
+          </div>
+          <div class="field">
+            <label for="last-name" data-i18n="contact-last-name">Last name</label>
+            <input id="last-name" name="last-name" type="text" autocomplete="family-name">
+          </div>
+          <div class="field field-full">
+            <label for="email" data-i18n="contact-email">Email</label>
+            <input id="email" name="email" type="email" autocomplete="email" inputmode="email" required aria-describedby="err-email" dir="ltr">
+            <p class="err" id="err-email" data-i18n="form-err-email" hidden>Enter a valid email address.</p>
+          </div>
+          <div class="field field-full">
+            <div class="label-row">
+              <label for="phone" data-i18n="contact-phone">Phone</label>
+              <span class="hint" id="phone-hint" data-i18n="contact-optional">Optional</span>
+            </div>
+            <input id="phone" name="phone" type="tel" autocomplete="tel" aria-describedby="phone-hint" dir="ltr">
+          </div>
+          <div class="field field-full">
+            <div class="label-row">
+              <label for="message" data-i18n="contact-message">How can we help?</label>
+              <span class="hint" id="message-hint"><span data-i18n="form-max">Max. 500 characters</span> · <span data-count dir="ltr">0/500</span></span>
+            </div>
+            <textarea id="message" name="message" rows="4" maxlength="500" required aria-describedby="message-hint err-message"></textarea>
+            <p class="err" id="err-message" data-i18n="form-err-message" hidden>Write a few words about your request.</p>
+          </div>
+          <div class="field field-full">
+            <label for="heard" data-i18n="contact-how">How did you hear about us?</label>
+            <input id="heard" name="heard" type="text">
+          </div>
+
+          <div class="form-actions field-full">
+            <button type="submit" class="btn btn-ochre" data-i18n="contact-submit">Submit</button>
+            <p class="form-status" role="status" aria-live="polite" data-form-status></p>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ Footer ============ -->
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <p class="footer-brand"><span lang="fr">Domaine du loup</span> · <span lang="he">יקב זאב</span></p>
+      <p class="footer-meta"><span dir="ltr">© <span data-year>2026</span> Yekev Zeev</span> · <span data-i18n="footer-rights">All rights reserved.</span></p>
+      <ul class="footer-links">
+        <li><a href="https://goo.gl/maps/TMsGVomxbrcGxnPZ9" target="_blank" rel="noopener" data-i18n="our-location">Our location</a></li>
+        <li><a href="mailto:yekevzeev@gmail.com">yekevzeev@gmail.com</a></li>
+        <li><a href="#top" data-i18n="footer-top">Back to top</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <!-- Mobile sticky call to action -->
+  <a class="sticky-cta" href="#contact" data-topic="tasting" data-sticky-cta>
+    <span data-i18n="ui-cta-tasting">Book a tasting</span>
+  </a>
+
+  <!-- Lightbox -->
+  <dialog class="lightbox" data-lightbox>
+    <figure class="lb-figure">
+      <picture data-lb-picture></picture>
+      <figcaption><span data-lb-caption></span> <span class="lb-count" data-lb-count></span></figcaption>
+    </figure>
+    <button type="button" class="lb-btn lb-close" data-lb-close data-i18n-attr="aria-label:lb-close" aria-label="Close">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>
+    </button>
+    <button type="button" class="lb-btn lb-prev" data-lb-prev data-i18n-attr="aria-label:lb-prev" aria-label="Previous photo">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 4l-8 8 8 8"/></svg>
+    </button>
+    <button type="button" class="lb-btn lb-next" data-lb-next data-i18n-attr="aria-label:lb-next" aria-label="Next photo">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4l8 8-8 8"/></svg>
+    </button>
+  </dialog>
+
+  <script src="i18n.js" defer></script>
+  <script src="main.js" defer></script>
+</body>
+</html>
