@@ -391,8 +391,24 @@ function setLanguage(next){
  try{localStorage.setItem('yekev-language',lang)}catch{}
 }
 setLanguage(lang);
-document.querySelectorAll('.languages a').forEach(a=>a.addEventListener('click',e=>{if(e.ctrlKey||e.metaKey||e.shiftKey||e.altKey)return;e.preventDefault();setLanguage(a.lang);const url=new URL(location.href);url.searchParams.set('lang',a.lang);history.pushState({},'',url)}));
-addEventListener('popstate',()=>{const value=new URLSearchParams(location.search).get('lang');setLanguage(Object.hasOwn(translations,value)?value:'fr')});
+// Remember the resolved language even when the URL has no language parameter.
+// Fragment navigation can also fire popstate; it must not reset the language.
+history.replaceState({...history.state,language:lang},'',location.href);
+let languageRoute=location.pathname+location.search;
+document.querySelectorAll('.languages a').forEach(a=>a.addEventListener('click',e=>{if(e.ctrlKey||e.metaKey||e.shiftKey||e.altKey)return;e.preventDefault();setLanguage(a.lang);const url=new URL(location.href);url.searchParams.set('lang',a.lang);history.pushState({...history.state,language:a.lang},'',url);languageRoute=location.pathname+location.search}));
+addEventListener('popstate',event=>{
+ const route=location.pathname+location.search;
+ // A hash-only history change is navigation within the current language.
+ if(route!==languageRoute){
+  const value=new URLSearchParams(location.search).get('lang');
+  const previous=event.state?.language;
+  const next=Object.hasOwn(translations,value)?value:Object.hasOwn(translations,previous)?previous:lang;
+  if(next!==lang)setLanguage(next);
+  languageRoute=route;
+ }
+ // Browsers may create fragment entries without copying the previous state.
+ history.replaceState({...history.state,language:lang},'',location.href);
+});
 document.getElementById('year').textContent=new Date().getFullYear();
 document.getElementById('contact-form').addEventListener('submit',e=>{
  e.preventDefault();const data=new FormData(e.currentTarget);const t=translations[lang];
