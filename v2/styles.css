@@ -92,7 +92,11 @@ h1, h2, p, figure { margin: 0; }
   background: var(--wine); color: var(--paper);
 }
 .hero .eyebrow { color: var(--gold); }
-.hero-intro { margin: var(--space-4) 0 var(--group-space); color: #e0e8df; }
+.hero-intro { margin: var(--space-4) 0 var(--space-3); color: #e0e8df; }
+.hero-kosher {
+  margin-bottom: var(--group-space); color: #e0e8df;
+  font-size: var(--text-label); line-height: 1.6;
+}
 .button {
   display: inline-flex; align-items: center; justify-content: center;
   min-height: 3.125rem; padding: .8125rem var(--space-3);
@@ -136,6 +140,7 @@ h1, h2, p, figure { margin: 0; }
 .gallery-grid [data-photo=vineyard] img { object-position: 50% 35%; }
 .gallery-grid [data-photo=sharing] img { object-position: 35% 45%; }
 #more-photos { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+#more-photos img { aspect-ratio: 4/3; object-fit: contain; background: #e5e0d6; }
 #more-photos [data-photo=tasting] img { object-position: 42% 45%; }
 .more-gallery { margin-top: var(--group-space); }
 .more-gallery summary { cursor: pointer; min-height: 2.75rem; width: fit-content; border-bottom: 1px solid var(--wine); padding: .5rem 0; }
