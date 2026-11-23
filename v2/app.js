@@ -444,6 +444,27 @@ dialog.addEventListener('close',()=>opener?.focus());
 const header=document.querySelector('.header');
 new ResizeObserver(()=>document.documentElement.style.setProperty('--header-height',header.getBoundingClientRect().height+'px')).observe(header);
 
+// Reveal the introduction once, while leaving the logo opening untouched.
+// Content stays visible when motion, JavaScript, or observers are unavailable.
+if('IntersectionObserver' in window&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
+ const introduction=document.querySelector('.hero-copy');
+ const motionPreference=matchMedia('(prefers-reduced-motion: reduce)');
+ const introductionObserver=new IntersectionObserver(entries=>{
+  if(entries.some(entry=>entry.isIntersecting&&entry.intersectionRatio>=.12)){
+   introduction.classList.add('introduction-entered');
+   introductionObserver.disconnect();
+  }
+ },{threshold:.12});
+ introductionObserver.observe(introduction);
+ function finishIntroduction(){
+  introductionObserver.disconnect();
+  introduction.classList.remove('introduction-entered');
+ }
+ // Focusing a link must show it immediately and never replay the entrance.
+ introduction.addEventListener('focusin',finishIntroduction,{once:true});
+ motionPreference.addEventListener('change',finishIntroduction,{once:true});
+}
+
 // Mark the section crossing a reading line 30% down the viewport.
 // The logo and introduction have no navigation item, so they clear the marker.
 const navigationLinks=[...document.querySelectorAll('.nav a')];

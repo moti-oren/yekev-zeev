@@ -113,6 +113,13 @@ h1, h2, p, figure { margin: 0; }
   padding-inline: 0 clamp(2.5rem, 5vw, 5rem);
   background: var(--wine); color: var(--paper);
 }
+@keyframes introduction-enter {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hero-copy.introduction-entered { animation: introduction-enter 480ms ease-out both; }
+}
 .hero .eyebrow { color: var(--gold); }
 .hero-intro { margin: var(--space-4) 0 var(--space-3); color: #e0e8df; }
 .hero-kosher {
