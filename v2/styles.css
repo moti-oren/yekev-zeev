@@ -130,9 +130,18 @@ h1, h2, p, figure { margin: 0; }
   display: inline-flex; align-items: center; justify-content: center;
   min-height: 3.125rem; padding: .8125rem var(--space-3);
   border: 1px solid transparent; text-decoration: none; cursor: pointer;
+  transition: background-color 160ms ease-out, transform 160ms ease-out, box-shadow 160ms ease-out;
 }
 .light { background: var(--paper); color: var(--wine); }
-.light:hover { background: #dfe6d7; }
+.light:focus-visible { background: #dfe6d7; }
+@media (hover: hover) and (pointer: fine) {
+  .button:hover { transform: translateY(-2px); box-shadow: 0 4px 12px #102b241a; }
+  .light:hover { background: #dfe6d7; }
+}
+.button:active {
+  transform: translateY(1px) scale(.985); box-shadow: none;
+  transition-duration: 80ms;
+}
 .hero-contact { margin-top: var(--space-3); }
 .hero-foot {
   display: flex; justify-content: space-between; gap: var(--space-2);
@@ -193,7 +202,10 @@ input:focus, textarea:focus { border-color: var(--wine); }
 textarea { resize: vertical; }
 .form-note { color: var(--muted); margin: 0 0 var(--space-4); }
 .contact .button { background: var(--wine); color: var(--paper); }
-.contact .button:hover { background: #234d40; }
+.contact .button:focus-visible { background: #234d40; }
+@media (hover: hover) and (pointer: fine) {
+  .contact .button:hover { background: #234d40; }
+}
 #form-status { color: var(--muted); }
 #form-status:not(:empty) { margin-top: var(--space-2); }
 footer {
@@ -261,4 +273,5 @@ html:has(dialog[open]) { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; scroll-snap-type: none; }
   *, .nav a::after, .languages a::after { transition: none !important; }
+  .button { transform: none !important; }
 }
