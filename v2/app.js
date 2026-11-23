@@ -427,3 +427,42 @@ dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoun
 dialog.addEventListener('close',()=>opener?.focus());
 const header=document.querySelector('.header');
 new ResizeObserver(()=>document.documentElement.style.setProperty('--header-height',header.getBoundingClientRect().height+'px')).observe(header);
+
+// Mark the section crossing a reading line 30% down the viewport.
+// The logo and introduction have no navigation item, so they clear the marker.
+const navigationLinks=[...document.querySelectorAll('.nav a')];
+const navigationSections=[...document.querySelectorAll('main > section[id]')];
+function updateNavigationLocation(){
+ const readingLine=innerHeight*.3;
+ const current=navigationSections.find(section=>{
+  const bounds=section.getBoundingClientRect();
+  return bounds.top<=readingLine&&bounds.bottom>readingLine;
+ });
+ navigationLinks.forEach(link=>{
+  if(current&&link.hash==='#'+current.id)link.setAttribute('aria-current','location');
+  else link.removeAttribute('aria-current');
+ });
+}
+if('IntersectionObserver' in window){
+ let navigationObserver;
+ function observeNavigationSections(){
+  navigationObserver?.disconnect();
+  const top=Math.floor(innerHeight*.3);
+  const bottom=innerHeight-top-1;
+  navigationObserver=new IntersectionObserver(updateNavigationLocation,{
+   rootMargin:`-${top}px 0px -${bottom}px 0px`,threshold:0
+  });
+  navigationSections.forEach(section=>navigationObserver.observe(section));
+  updateNavigationLocation();
+ }
+ observeNavigationSections();
+ let navigationResizeFrame;
+ addEventListener('resize',()=>{
+  cancelAnimationFrame(navigationResizeFrame);
+  navigationResizeFrame=requestAnimationFrame(observeNavigationSections);
+ });
+}else{
+ addEventListener('scroll',updateNavigationLocation,{passive:true});
+ addEventListener('resize',updateNavigationLocation);
+ updateNavigationLocation();
+}
