@@ -444,14 +444,27 @@ function closeLightbox(){
 lightboxMotion.addEventListener('change',()=>{
  if(!lightboxMotion.matches)return;
  if(dialog.classList.contains('is-closing'))dialog.close();
- else lightboxAnimation?.cancel();
+ else{
+  lightboxAnimation?.cancel();
+  if(dialog.open)showImage(currentImage);
+ }
 });
 const galleryLinks=[...document.querySelectorAll('.gallery-grid a')];
+const lightboxPhoto=dialog.querySelector('img');
+let imageRequest=0;
+let imageTransition;
+let displayedImage=0;
 const imageControls={fr:['Photo précédente','Photo suivante'],en:['Previous photograph','Next photograph'],he:['התמונה הקודמת','התמונה הבאה']};
 function showImage(index){
+ if(dialog.classList.contains('is-closing'))return;
+ const request=++imageRequest;
+ imageTransition?.cancel();
  currentImage=(index+galleryLinks.length)%galleryLinks.length;
  const a=galleryLinks[currentImage];const caption=a.querySelector('img').alt;
- dialog.querySelector('img').src=a.href;dialog.querySelector('img').alt=caption;
+ const selected=currentImage;
+ function renderPhoto(){
+ displayedImage=selected;
+ lightboxPhoto.src=a.href;lightboxPhoto.alt=caption;
  const counter=document.createElement('bdi');counter.dir='ltr';counter.textContent=(currentImage+1)+' / '+galleryLinks.length;
  document.getElementById('image-caption').replaceChildren(document.createTextNode(caption+' · '),counter);
  const rtl=lang==='he';
@@ -459,6 +472,24 @@ function showImage(index){
  dialog.querySelector('.next').setAttribute('aria-label',imageControls[lang][1]);
  dialog.querySelector('.previous').textContent=rtl?'→':'←';
  dialog.querySelector('.next').textContent=rtl?'←':'→';
+ }
+ if(!dialog.open||lightboxMotion.matches||typeof lightboxPhoto.animate!=='function'){
+  renderPhoto();return;
+ }
+ // Keep the current photograph visible until the next one is ready.
+ const nextPhoto=new Image();nextPhoto.src=a.href;
+ nextPhoto.decode().then(()=>{
+  if(request!==imageRequest||!dialog.open||dialog.classList.contains('is-closing'))return;
+  if(lightboxMotion.matches){renderPhoto();return;}
+  imageTransition=lightboxPhoto.animate({opacity:[1,0]},{duration:80,fill:'forwards'});
+  imageTransition.onfinish=()=>{
+   if(request!==imageRequest)return;
+   renderPhoto();imageTransition.cancel();
+   imageTransition=lightboxPhoto.animate({opacity:[0,1]},{duration:160,easing:'ease-out'});
+  };
+ }).catch(()=>{
+  if(request===imageRequest)currentImage=displayedImage;
+ });
 }
 galleryLinks.forEach((a,index)=>a.addEventListener('click',e=>{if(e.ctrlKey||e.metaKey||e.shiftKey||e.altKey)return;e.preventDefault();opener=a;showImage(index);openLightbox()}));
 dialog.querySelector('.close').addEventListener('click',closeLightbox);
@@ -471,6 +502,7 @@ dialog.addEventListener('keydown',e=>{
 });
 dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)closeLightbox()}});
 dialog.addEventListener('close',()=>{
+ ++imageRequest;imageTransition?.cancel();
  lightboxAnimation?.cancel();lightboxAnimation=null;
  dialog.classList.remove('is-closing');
  opener?.focus();
