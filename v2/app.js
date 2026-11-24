@@ -465,6 +465,24 @@ if('IntersectionObserver' in window&&!matchMedia('(prefers-reduced-motion: reduc
  motionPreference.addEventListener('change',finishIntroduction,{once:true});
 }
 
+// Each story column enters once when it reaches the viewport, including on mobile.
+if('IntersectionObserver' in window&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
+ const storyBlocks=[...document.querySelectorAll('.story > div')];
+ const storyObserver=new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+   if(entry.isIntersecting&&entry.intersectionRatio>=.12){
+    entry.target.classList.add('story-entered');
+    storyObserver.unobserve(entry.target);
+   }
+  });
+ },{threshold:.12});
+ storyBlocks.forEach(block=>storyObserver.observe(block));
+ matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change',()=>{
+  storyObserver.disconnect();
+  storyBlocks.forEach(block=>block.classList.remove('story-entered'));
+ },{once:true});
+}
+
 // Mark the section crossing a reading line 30% down the viewport.
 // The logo and introduction have no navigation item, so they clear the marker.
 const navigationLinks=[...document.querySelectorAll('.nav a')];
