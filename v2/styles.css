@@ -178,9 +178,21 @@ h1, h2, p, figure { margin: 0; }
 .section-heading > p { max-inline-size: 38ch; color: var(--muted); }
 .gallery-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gallery-gap); }
 .gallery-grid figure { min-width: 0; }
-.gallery-grid a { overflow: hidden; background: #ded5cd; display: block; }
-.gallery-grid img { width: 100%; height: auto; aspect-ratio: 3/4; object-fit: cover; transition: transform .3s; }
-.gallery-grid a:hover img { transform: scale(1.025); }
+.gallery-grid a { position: relative; overflow: hidden; background: #ded5cd; display: block; cursor: zoom-in; }
+.gallery-grid img { width: 100%; height: auto; aspect-ratio: 3/4; object-fit: cover; transition: transform 280ms ease-out; }
+.gallery-grid a::after {
+  content: ''; position: absolute; inset-inline-end: .75rem; bottom: .75rem;
+  width: 2.25rem; height: 2.25rem; border: 1px solid #ffffff80;
+  background: #183c32e6 url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="white" stroke-width="1.4"%3E%3Cpath d="M7 3H3v4m10-4h4v4M3 13v4h4m10-4v4h-4"/%3E%3C/svg%3E') center/1.125rem no-repeat;
+  pointer-events: none; opacity: 0; transform: translateY(4px);
+  transition: opacity 180ms ease-out, transform 180ms ease-out;
+}
+.gallery-grid a:focus-visible img { transform: scale(1.025); }
+.gallery-grid a:focus-visible::after { opacity: 1; transform: translateY(0); }
+@media (hover: hover) and (pointer: fine) {
+  .gallery-grid a:hover img { transform: scale(1.025); }
+  .gallery-grid a:hover::after { opacity: 1; transform: translateY(0); }
+}
 .gallery-grid figcaption { padding-top: var(--space-2); color: var(--muted); font-size: .9375rem; line-height: 1.6; }
 .gallery-grid [data-photo=bottle] img { object-fit: contain; background: #e5e0d6; }
 .gallery-grid [data-photo=vineyard] img { object-position: 50% 35%; }
@@ -293,6 +305,6 @@ html:has(dialog[open]) { overflow: hidden; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; scroll-snap-type: none; }
-  *, .nav a::after, .languages a::after { transition: none !important; }
-  .button { transform: none !important; }
+  *, .nav a::after, .languages a::after, .gallery-grid a::after { transition: none !important; }
+  .button, .gallery-grid img, .gallery-grid a::after { transform: none !important; }
 }
