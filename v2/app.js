@@ -373,6 +373,43 @@ galleryPhotos.slice(3).forEach(photo=>{
  const img=document.createElement('img');img.src=a.href;img.loading='lazy';img.decoding='async';img.width=photo.width;img.height=photo.height;
  a.append(img);figure.append(a,document.createElement('figcaption'));more.append(figure);
 });
+const contactForm=document.getElementById('contact-form');
+const validationMessages={
+ fr:{required:'Veuillez remplir ce champ.',email:'Veuillez saisir une adresse e-mail valide.',invalid:'Veuillez vérifier ce champ.'},
+ en:{required:'Please fill in this field.',email:'Please enter a valid email address.',invalid:'Please check this field.'},
+ he:{required:'נא למלא את השדה.',email:'נא להזין כתובת דוא״ל תקינה.',invalid:'נא לבדוק את הערך בשדה.'}
+};
+function updateFieldError(field){
+ const id='field-error-'+field.name;
+ let error=document.getElementById(id);
+ const descriptions=new Set((field.getAttribute('aria-describedby')||'').split(/\s+/).filter(Boolean));
+ if(field.validity.valid){
+  error?.remove();field.removeAttribute('aria-invalid');descriptions.delete(id);
+ }else{
+  if(!error){
+   error=document.createElement('p');error.id=id;error.className='field-error';field.after(error);
+  }
+  const messages=validationMessages[lang];
+  error.textContent=field.validity.valueMissing?messages.required:field.type==='email'?messages.email:messages.invalid;
+  field.setAttribute('aria-invalid','true');descriptions.add(id);
+ }
+ if(descriptions.size)field.setAttribute('aria-describedby',[...descriptions].join(' '));
+ else field.removeAttribute('aria-describedby');
+}
+let validationFocusQueued=false;
+contactForm.addEventListener('invalid',event=>{
+ event.preventDefault();updateFieldError(event.target);
+ if(!validationFocusQueued){
+  validationFocusQueued=true;
+  queueMicrotask(()=>{
+   validationFocusQueued=false;
+   contactForm.querySelector('[aria-invalid=true]')?.focus();
+  });
+ }
+},true);
+contactForm.addEventListener('input',event=>{
+ if(event.target.getAttribute('aria-invalid')==='true')updateFieldError(event.target);
+});
 function setLanguage(next){
  lang=next;const t=translations[lang];document.documentElement.lang=lang;document.documentElement.dir=lang==='he'?'rtl':'ltr';
  document.querySelectorAll('[data-i]').forEach(el=>{el.innerHTML=t[el.dataset.i]});
@@ -388,6 +425,7 @@ function setLanguage(next){
  document.querySelector('meta[name="description"]').content=t.description;
  document.title=lang==='he'?'יקב זאב · Domaine du Loup':'Domaine du Loup · Yekev Zeev';
  document.getElementById('form-status').textContent='';
+ contactForm.querySelectorAll('[aria-invalid=true]').forEach(updateFieldError);
  try{localStorage.setItem('yekev-language',lang)}catch{}
 }
 setLanguage(lang);

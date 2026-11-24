@@ -238,6 +238,16 @@ input:focus, textarea:focus {
 }
 input:focus-visible, textarea:focus-visible { outline: 2px solid var(--wine); outline-offset: 2px; }
 textarea { resize: vertical; }
+.field-error { margin-top: .5rem; color: #943d35; font-size: .9375rem; line-height: 1.6; }
+input[aria-invalid=true], textarea[aria-invalid=true] { border-color: #943d35; }
+input[aria-invalid=true]:focus-visible, textarea[aria-invalid=true]:focus-visible { outline-color: #943d35; }
+@keyframes field-error-enter {
+  from { opacity: 0; transform: translateY(-3px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .field-error { animation: field-error-enter 160ms ease-out; }
+}
 .form-note { color: var(--muted); margin: 0 0 var(--space-4); }
 .contact .button { background: var(--wine); color: var(--paper); }
 .contact .button:focus-visible { background: #234d40; }
