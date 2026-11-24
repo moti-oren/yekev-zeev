@@ -190,6 +190,19 @@ h1, h2, p, figure { margin: 0; }
 .email { display: inline-block; margin-top: var(--group-space); color: var(--wine); }
 .contact-copy .location { margin-top: var(--group-space); }
 .map-link { display: inline-block; margin-top: var(--space-1); }
+.hero-contact, .email, .map-link {
+  text-decoration-thickness: 1px; text-decoration-color: #7d907f;
+  transition: text-underline-offset 180ms ease-out, text-decoration-color 180ms ease-out;
+}
+.hero-contact { text-decoration-color: #a5b7a9; }
+:is(.hero-contact, .email, .map-link):focus-visible {
+  text-underline-offset: .45em; text-decoration-color: currentColor;
+}
+@media (hover: hover) and (pointer: fine) {
+  :is(.hero-contact, .email, .map-link):hover {
+    text-underline-offset: .45em; text-decoration-color: currentColor;
+  }
+}
 .contact form { max-inline-size: 36rem; }
 form label { display: block; margin-bottom: var(--space-4); }
 form label > span { display: block; margin-bottom: var(--space-1); }
