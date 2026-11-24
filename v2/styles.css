@@ -225,13 +225,18 @@ h1, h2, p, figure { margin: 0; }
 }
 .contact form { max-inline-size: 36rem; }
 form label { display: block; margin-bottom: var(--space-4); }
-form label > span { display: block; margin-bottom: var(--space-1); }
+form label > span { display: block; margin-bottom: var(--space-1); transition: color 160ms ease-out; }
+form label:focus-within > span { color: var(--wine); }
 .form-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
 input, textarea {
   width: 100%; min-height: 3rem; border: 1px solid #7d907f;
   background: var(--field); color: var(--ink); padding: .625rem .75rem; border-radius: 0;
+  transition: border-color 160ms ease-out, background-color 160ms ease-out, box-shadow 160ms ease-out;
 }
-input:focus, textarea:focus { border-color: var(--wine); }
+input:focus, textarea:focus {
+  border-color: var(--wine); background: #fff; box-shadow: 0 0 0 3px #183c3214;
+}
+input:focus-visible, textarea:focus-visible { outline: 2px solid var(--wine); outline-offset: 2px; }
 textarea { resize: vertical; }
 .form-note { color: var(--muted); margin: 0 0 var(--space-4); }
 .contact .button { background: var(--wine); color: var(--paper); }
