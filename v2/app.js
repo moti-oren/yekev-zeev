@@ -413,6 +413,11 @@ contactForm.addEventListener('input',event=>{
 function setLanguage(next){
  lang=next;const t=translations[lang];document.documentElement.lang=lang;document.documentElement.dir=lang==='he'?'rtl':'ltr';
  document.querySelectorAll('[data-i]').forEach(el=>{el.innerHTML=t[el.dataset.i]});
+ const topArrow=document.createElement('span');topArrow.className='top-arrow';
+ topArrow.setAttribute('aria-hidden','true');topArrow.textContent='↑';
+ document.querySelector('footer a[data-i="top"]').replaceChildren(
+  document.createTextNode(t.top.replace(/\s*↑\s*$/,'')),topArrow
+ );
  document.querySelectorAll('[data-alt]').forEach(el=>el.alt=t[el.dataset.alt]);
  document.querySelectorAll('.gallery-grid figure').forEach(figure=>{
   const photo=galleryPhotos.find(photo=>photo.id===figure.dataset.photo);

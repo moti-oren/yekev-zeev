@@ -272,6 +272,14 @@ footer {
   border-top: 1px solid var(--line);
 }
 footer a { padding: .5rem 0; }
+footer a[data-i=top] { transition: color 180ms ease-out, text-underline-offset 180ms ease-out; }
+.top-arrow { display: inline-block; margin-inline-start: .4em; transition: transform 180ms ease-out; }
+footer a[data-i=top]:focus-visible { color: var(--wine); text-underline-offset: .45em; }
+footer a[data-i=top]:focus-visible .top-arrow { transform: translateY(-3px); }
+@media (hover: hover) and (pointer: fine) {
+  footer a[data-i=top]:hover { color: var(--wine); text-underline-offset: .45em; }
+  footer a[data-i=top]:hover .top-arrow { transform: translateY(-3px); }
+}
 .footer-brand { text-decoration: none; }
 
 /* Full-photo viewer and keyboard access. */
@@ -334,10 +342,11 @@ html:has(dialog[open]) { overflow: hidden; }
 @media (min-width: 901px) and (min-height: 650px) and (prefers-reduced-motion: no-preference) {
   html { scroll-snap-type: y proximity; scroll-padding-top: 0; }
   .hero-logo, .hero, .section { scroll-snap-align: start; }
+  footer { scroll-snap-align: end; }
   .hero, .section { scroll-margin-top: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; scroll-snap-type: none; }
   *, .nav a::after, .languages a::after, .gallery-grid a::after { transition: none !important; }
-  .button, .gallery-grid img, .gallery-grid a::after { transform: none !important; }
+  .button, .gallery-grid img, .gallery-grid a::after, .top-arrow { transform: none !important; }
 }
