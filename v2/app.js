@@ -417,6 +417,35 @@ document.getElementById('contact-form').addEventListener('submit',e=>{
  document.getElementById('form-status').textContent=t.status;location.href=mail;
 });
 const dialog=document.getElementById('lightbox');let opener;let currentImage=0;
+const lightboxMotion=matchMedia('(prefers-reduced-motion: reduce)');
+let lightboxAnimation;
+function openLightbox(){
+ dialog.showModal();
+ if(!lightboxMotion.matches&&typeof dialog.animate==='function'){
+  lightboxAnimation=dialog.animate(
+   {opacity:[0,1],transform:['scale(.985)','scale(1)']},
+   {duration:180,easing:'ease-out'}
+  );
+ }
+}
+function closeLightbox(){
+ if(!dialog.open||dialog.classList.contains('is-closing'))return;
+ if(lightboxMotion.matches||typeof dialog.animate!=='function'){dialog.close();return;}
+ const current=getComputedStyle(dialog);
+ const start={opacity:current.opacity,transform:current.transform};
+ lightboxAnimation?.cancel();
+ dialog.classList.add('is-closing');
+ lightboxAnimation=dialog.animate(
+  [start,{opacity:0,transform:'scale(.985)'}],
+  {duration:140,easing:'ease-in',fill:'forwards'}
+ );
+ lightboxAnimation.onfinish=()=>dialog.close();
+}
+lightboxMotion.addEventListener('change',()=>{
+ if(!lightboxMotion.matches)return;
+ if(dialog.classList.contains('is-closing'))dialog.close();
+ else lightboxAnimation?.cancel();
+});
 const galleryLinks=[...document.querySelectorAll('.gallery-grid a')];
 const imageControls={fr:['Photo précédente','Photo suivante'],en:['Previous photograph','Next photograph'],he:['התמונה הקודמת','התמונה הבאה']};
 function showImage(index){
@@ -431,16 +460,21 @@ function showImage(index){
  dialog.querySelector('.previous').textContent=rtl?'→':'←';
  dialog.querySelector('.next').textContent=rtl?'←':'→';
 }
-galleryLinks.forEach((a,index)=>a.addEventListener('click',e=>{if(e.ctrlKey||e.metaKey||e.shiftKey||e.altKey)return;e.preventDefault();opener=a;showImage(index);dialog.showModal()}));
-dialog.querySelector('.close').addEventListener('click',()=>dialog.close());
+galleryLinks.forEach((a,index)=>a.addEventListener('click',e=>{if(e.ctrlKey||e.metaKey||e.shiftKey||e.altKey)return;e.preventDefault();opener=a;showImage(index);openLightbox()}));
+dialog.querySelector('.close').addEventListener('click',closeLightbox);
+dialog.addEventListener('cancel',event=>{event.preventDefault();closeLightbox()});
 dialog.querySelector('.previous').addEventListener('click',()=>showImage(currentImage-1));
 dialog.querySelector('.next').addEventListener('click',()=>showImage(currentImage+1));
 dialog.addEventListener('keydown',e=>{
  if(e.altKey||e.ctrlKey||e.metaKey||!['ArrowLeft','ArrowRight'].includes(e.key))return;
  e.preventDefault();const nextKey=lang==='he'?'ArrowLeft':'ArrowRight';showImage(currentImage+(e.key===nextKey?1:-1));
 });
-dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close()}});
-dialog.addEventListener('close',()=>opener?.focus());
+dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)closeLightbox()}});
+dialog.addEventListener('close',()=>{
+ lightboxAnimation?.cancel();lightboxAnimation=null;
+ dialog.classList.remove('is-closing');
+ opener?.focus();
+});
 const header=document.querySelector('.header');
 new ResizeObserver(()=>document.documentElement.style.setProperty('--header-height',header.getBoundingClientRect().height+'px')).observe(header);
 
