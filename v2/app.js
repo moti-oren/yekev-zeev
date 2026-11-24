@@ -451,6 +451,22 @@ lightboxMotion.addEventListener('change',()=>{
 });
 const galleryLinks=[...document.querySelectorAll('.gallery-grid a')];
 const lightboxPhoto=dialog.querySelector('img');
+const imageStatus=document.createElement('p');
+imageStatus.id='image-status';imageStatus.setAttribute('role','status');
+imageStatus.setAttribute('aria-atomic','true');
+lightboxPhoto.after(imageStatus);
+const imageMessages={
+ fr:{loading:'Chargement de la photo…',error:'Impossible de charger cette photo. Réessayez avec les flèches.'},
+ en:{loading:'Loading photograph…',error:'This photograph could not load. Use the arrows to try again.'},
+ he:{loading:'טוען תמונה…',error:'לא ניתן לטעון את התמונה. נסו שוב באמצעות החיצים.'}
+};
+let imageLoadingTimer;
+let hasPhoto=false;
+function clearPhotoLoading(){
+ clearTimeout(imageLoadingTimer);
+ lightboxPhoto.removeAttribute('aria-busy');
+ imageStatus.textContent='';
+}
 let imageRequest=0;
 let imageTransition;
 let displayedImage=0;
@@ -459,28 +475,38 @@ function showImage(index){
  if(dialog.classList.contains('is-closing'))return;
  const request=++imageRequest;
  imageTransition?.cancel();
+ clearPhotoLoading();
+ const switching=dialog.open&&hasPhoto;
+ if(!dialog.open){
+  hasPhoto=false;dialog.classList.add('image-empty');
+  lightboxPhoto.removeAttribute('src');lightboxPhoto.alt='';
+  document.getElementById('image-caption').textContent='';
+ }
+ lightboxPhoto.setAttribute('aria-busy','true');
+ // Avoid flashing a loading message for images already in the browser cache.
+ imageLoadingTimer=setTimeout(()=>{
+  if(request===imageRequest)imageStatus.textContent=imageMessages[lang].loading;
+ },180);
  currentImage=(index+galleryLinks.length)%galleryLinks.length;
  const a=galleryLinks[currentImage];const caption=a.querySelector('img').alt;
  const selected=currentImage;
  function renderPhoto(){
- displayedImage=selected;
- lightboxPhoto.src=a.href;lightboxPhoto.alt=caption;
- const counter=document.createElement('bdi');counter.dir='ltr';counter.textContent=(currentImage+1)+' / '+galleryLinks.length;
- document.getElementById('image-caption').replaceChildren(document.createTextNode(caption+' · '),counter);
+  clearPhotoLoading();hasPhoto=true;dialog.classList.remove('image-empty');
+  displayedImage=selected;
+  lightboxPhoto.src=a.href;lightboxPhoto.alt=caption;
+  const counter=document.createElement('bdi');counter.dir='ltr';counter.textContent=(selected+1)+' / '+galleryLinks.length;
+  document.getElementById('image-caption').replaceChildren(document.createTextNode(caption+' · '),counter);
+ }
  const rtl=lang==='he';
  dialog.querySelector('.previous').setAttribute('aria-label',imageControls[lang][0]);
  dialog.querySelector('.next').setAttribute('aria-label',imageControls[lang][1]);
  dialog.querySelector('.previous').textContent=rtl?'→':'←';
  dialog.querySelector('.next').textContent=rtl?'←':'→';
- }
- if(!dialog.open||lightboxMotion.matches||typeof lightboxPhoto.animate!=='function'){
-  renderPhoto();return;
- }
  // Keep the current photograph visible until the next one is ready.
  const nextPhoto=new Image();nextPhoto.src=a.href;
  nextPhoto.decode().then(()=>{
   if(request!==imageRequest||!dialog.open||dialog.classList.contains('is-closing'))return;
-  if(lightboxMotion.matches){renderPhoto();return;}
+  if(!switching||lightboxMotion.matches||typeof lightboxPhoto.animate!=='function'){renderPhoto();return;}
   imageTransition=lightboxPhoto.animate({opacity:[1,0]},{duration:80,fill:'forwards'});
   imageTransition.onfinish=()=>{
    if(request!==imageRequest)return;
@@ -488,7 +514,10 @@ function showImage(index){
    imageTransition=lightboxPhoto.animate({opacity:[0,1]},{duration:160,easing:'ease-out'});
   };
  }).catch(()=>{
-  if(request===imageRequest)currentImage=displayedImage;
+  if(request!==imageRequest||!dialog.open||dialog.classList.contains('is-closing'))return;
+  clearPhotoLoading();
+  currentImage=hasPhoto?displayedImage:selected;
+  imageStatus.textContent=imageMessages[lang].error;
  });
 }
 galleryLinks.forEach((a,index)=>a.addEventListener('click',e=>{if(e.ctrlKey||e.metaKey||e.shiftKey||e.altKey)return;e.preventDefault();opener=a;showImage(index);openLightbox()}));
@@ -503,6 +532,7 @@ dialog.addEventListener('keydown',e=>{
 dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)closeLightbox()}});
 dialog.addEventListener('close',()=>{
  ++imageRequest;imageTransition?.cancel();
+ clearPhotoLoading();
  lightboxAnimation?.cancel();lightboxAnimation=null;
  dialog.classList.remove('is-closing');
  opener?.focus();

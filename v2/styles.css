@@ -259,6 +259,8 @@ dialog::backdrop { background: #0c211ce8; }
   dialog[open].is-closing::backdrop { animation: lightbox-backdrop-out 140ms ease-in both; }
 }
 dialog > img { max-height: 65vh; width: auto; margin: auto; object-fit: contain; }
+dialog.image-empty > img { visibility: hidden; width: min(24rem, 65vw); height: min(40vh, 20rem); }
+#image-status { min-height: 1.6em; margin-top: .5rem; color: var(--muted); text-align: center; font-size: .9375rem; line-height: 1.6; }
 .close { display: block; margin-inline-start: auto; border: 0; background: none; font-size: 1.875rem; cursor: pointer; min-width: 2.75rem; min-height: 2.75rem; }
 .lightbox-navigation { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); }
 .lightbox-navigation button { flex-shrink: 0; min-width: 3rem; min-height: 3rem; border: 1px solid var(--line); background: var(--paper); color: var(--wine); font-size: 1.5rem; cursor: pointer; }
