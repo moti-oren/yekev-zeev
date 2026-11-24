@@ -444,6 +444,43 @@ dialog.addEventListener('close',()=>opener?.focus());
 const header=document.querySelector('.header');
 new ResizeObserver(()=>document.documentElement.style.setProperty('--header-height',header.getBoundingClientRect().height+'px')).observe(header);
 
+// Animate the native disclosure without changing its keyboard or no-JS fallback.
+const moreGallery=document.querySelector('.more-gallery');
+const moreSummary=moreGallery.querySelector('summary');
+if(typeof moreGallery.animate==='function'){
+ const galleryMotion=matchMedia('(prefers-reduced-motion: reduce)');
+ let galleryExpansion;
+ let galleryExpanded=moreGallery.open;
+ function finishGalleryExpansion(){
+  moreGallery.open=galleryExpanded;
+  galleryExpansion?.cancel();
+  galleryExpansion=null;
+  moreGallery.style.overflow='';
+  more.inert=false;
+ }
+ moreSummary.addEventListener('click',event=>{
+  // Let modified clicks and reduced-motion preferences retain native behavior.
+  if(event.ctrlKey||event.metaKey||event.altKey||event.shiftKey)return;
+  event.preventDefault();
+  const currentHeight=moreGallery.getBoundingClientRect().height;
+  galleryExpanded=!(galleryExpansion?galleryExpanded:moreGallery.open);
+  galleryExpansion?.cancel();
+  if(galleryMotion.matches){finishGalleryExpansion();return;}
+  moreGallery.open=true;
+  more.inert=!galleryExpanded;
+  const targetHeight=galleryExpanded?moreGallery.getBoundingClientRect().height:moreSummary.getBoundingClientRect().height;
+  moreGallery.style.overflow='hidden';
+  galleryExpansion=moreGallery.animate(
+   {height:[currentHeight+'px',targetHeight+'px']},
+   {duration:galleryExpanded?320:240,easing:'cubic-bezier(.2, .7, .3, 1)',fill:'both'}
+  );
+  galleryExpansion.onfinish=finishGalleryExpansion;
+ });
+ galleryMotion.addEventListener('change',()=>{
+  if(galleryMotion.matches&&galleryExpansion)finishGalleryExpansion();
+ });
+}
+
 // Reveal the introduction once, while leaving the logo opening untouched.
 // Content stays visible when motion, JavaScript, or observers are unavailable.
 if('IntersectionObserver' in window&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
