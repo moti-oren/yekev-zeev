@@ -255,7 +255,17 @@ input[aria-invalid=true]:focus-visible, textarea[aria-invalid=true]:focus-visibl
   .contact .button:hover { background: #234d40; }
 }
 #form-status { color: var(--muted); }
-#form-status:not(:empty) { margin-top: var(--space-2); }
+#form-status:not(:empty) {
+  margin-top: var(--space-3); padding: var(--space-2);
+  border-inline-start: 2px solid var(--wine); background: #ffffff80;
+}
+@keyframes form-status-enter {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  #form-status:not(:empty) { animation: form-status-enter 200ms ease-out; }
+}
 footer {
   display: flex; align-items: center; justify-content: space-between;
   gap: var(--space-4); padding: var(--space-5) var(--page-inset);
